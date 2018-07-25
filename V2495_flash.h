@@ -129,9 +129,6 @@ private:
 public:
 	typedef enum {MAIN_CONTROLLER_OFFSET = 0x8500, USER_CONTROLLER_OFFSET = 0x8700} controller_t;
 	typedef enum {BOOT_FW_REGION, APPLICATION1_FW_REGION, APPLICATION2_FW_REGION, APPLICATION3_FW_REGION, APPLICATION4_FW_REGION, APPLICATION5_FW_REGION } fw_region_t;
-	const static uint32_t HPGE_RANGE_CODE = 0;
-	const static uint32_t PMT_RANGE_CODE = 1;
-	const static uint32_t SD_RANGE_CODE = 2;
 
 	V2495_flash(controller_t controller_offset);
 	~V2495_flash();
