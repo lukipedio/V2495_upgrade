@@ -60,8 +60,8 @@ private:
 	//
 
 	const static uint32_t MAIN_FACTORY_START_ADDRESS = 0x00000000;
-	const static uint32_t MAIN_APPLICATION_START_ADDRESS = 0x00800000;
-	const static uint32_t MAIN_CONFIG_ROM_START_ADDRESS = 0x007F0000;
+	const static uint32_t MAIN_APPLICATION_START_ADDRESS = 0x00400000;
+	const static uint32_t MAIN_CONFIG_ROM_START_ADDRESS = 0x01FF0000;
 
 	// ************ USER FIRMWARE FLASH MAP ****************
 	//	Start Address 	Description 	Sectors
@@ -78,16 +78,12 @@ private:
 	const static uint32_t USER_APPLICATION3_START_ADDRESS = 0x01040000;
 	const static uint32_t USER_APPLICATION4_START_ADDRESS = 0x01460000;
 	const static uint32_t USER_APPLICATION5_START_ADDRESS = 0x01880000;
-	
-	// *********** HV RANGES ADDRESS ****************
-	const static uint32_t ACTIVE_RANGES_PAGE_ADDRESS = 0x012C0000;
-	const static uint32_t HV_CHANNELS_ROM_PAGE_ADDRESS = 0x00670000;
 
 	const static uint32_t PAGE_SIZE                      = 256; // bytes
 	const static uint32_t SECTOR_SIZE                    = 64 * 1024; // 64KB
 
-	const static uint32_t MAIN_FIRMWARE_SECTORS          = 66;
-	const static uint32_t MAIN_FIRMWARE_BITSTREAM_LENGTH = 4321299; // bytes
+	const static uint32_t MAIN_FIRMWARE_SECTORS          = 42;
+	const static uint32_t MAIN_FIRMWARE_BITSTREAM_LENGTH = 2709139; // bytes
 
 	const static uint32_t USER_FIRMWARE_SECTORS          = 66;
 	const static uint32_t USER_FIRMWARE_BITSTREAM_LENGTH = 4321299; // bytes
