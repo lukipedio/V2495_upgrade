@@ -33,6 +33,11 @@ V2495_flash::V2495_flash(controller_t controller_offset)
 			controller_base_address = MAIN_CONTROLLER_OFFSET;
 			bitstream_length = MAIN_FIRMWARE_BITSTREAM_LENGTH;
 			break;
+	    case USER_CONTROLLER_OFFSET:
+		    controller_base_address = USER_CONTROLLER_OFFSET;
+		    bitstream_length = USER_FIRMWARE_BITSTREAM_LENGTH;
+		    break;
+
 		default:
 			break;
 		}
@@ -329,6 +334,35 @@ void V2495_flash::program_firmware(fw_region_t region, char *filename, int verif
 		}
 
 		break;
+
+	case USER_CONTROLLER_OFFSET:
+		sectors_to_write = USER_FIRMWARE_SECTORS;
+
+		switch (region) {
+		case BOOT_FW_REGION:
+			start_address = USER_FACTORY_START_ADDRESS;
+			break;
+		case APPLICATION1_FW_REGION:
+			start_address = USER_APPLICATION1_START_ADDRESS;
+			break;
+		case APPLICATION2_FW_REGION:
+			start_address = USER_APPLICATION2_START_ADDRESS;
+			break;
+		case APPLICATION3_FW_REGION:
+			start_address = USER_APPLICATION3_START_ADDRESS;
+			break;
+		case APPLICATION4_FW_REGION:
+			start_address = USER_APPLICATION4_START_ADDRESS;
+			break;
+		case APPLICATION5_FW_REGION:
+			start_address = USER_APPLICATION5_START_ADDRESS;
+			break;
+		default:
+			break;
+		}
+
+		break;
+
 	default:
 		throw cuhRetCode_InvalidController;
 		break;
@@ -440,6 +474,34 @@ void V2495_flash::verify_firmware(fw_region_t region, char *filename, int no_bit
 		}
 
 		break;
+	case USER_CONTROLLER_OFFSET:
+		sectors_to_read = USER_FIRMWARE_SECTORS;
+
+		switch (region) {
+		case BOOT_FW_REGION:
+			start_address = USER_FACTORY_START_ADDRESS;
+			break;
+		case APPLICATION1_FW_REGION:
+			start_address = USER_APPLICATION1_START_ADDRESS;
+			break;
+		case APPLICATION2_FW_REGION:
+			start_address = USER_APPLICATION2_START_ADDRESS;
+			break;
+		case APPLICATION3_FW_REGION:
+			start_address = USER_APPLICATION3_START_ADDRESS;
+			break;
+		case APPLICATION4_FW_REGION:
+			start_address = USER_APPLICATION4_START_ADDRESS;
+			break;
+		case APPLICATION5_FW_REGION:
+			start_address = USER_APPLICATION5_START_ADDRESS;
+			break;
+		default:
+			break;
+		}
+
+		break;
+
 	default:
 		throw cuhRetCode_InvalidRegion;
 		break;
@@ -512,6 +574,34 @@ void V2495_flash::erase_firmware(fw_region_t region) {
 			break;
 		}
 		break;
+	case USER_CONTROLLER_OFFSET:
+		sectors_to_erase = USER_FIRMWARE_SECTORS;
+
+		switch (region) {
+		case BOOT_FW_REGION:
+			start_address = USER_FACTORY_START_ADDRESS;
+			break;
+		case APPLICATION1_FW_REGION:
+			start_address = USER_APPLICATION1_START_ADDRESS;
+			break;
+		case APPLICATION2_FW_REGION:
+			start_address = USER_APPLICATION2_START_ADDRESS;
+			break;
+		case APPLICATION3_FW_REGION:
+			start_address = USER_APPLICATION3_START_ADDRESS;
+			break;
+		case APPLICATION4_FW_REGION:
+			start_address = USER_APPLICATION4_START_ADDRESS;
+			break;
+		case APPLICATION5_FW_REGION:
+			start_address = USER_APPLICATION5_START_ADDRESS;
+			break;
+		default:
+			break;
+		}
+
+		break;
+
 	default:
 		throw cuhRetCode_InvalidRegion;
 		break;
@@ -569,6 +659,31 @@ void V2495_flash::dump_firmware(fw_region_t region, char *filename, int no_bit_r
 			break;
 		}
 		break;
+	case USER_CONTROLLER_OFFSET:
+		sectors_to_dump = USER_FIRMWARE_SECTORS;
+		switch (region) {
+		case BOOT_FW_REGION:
+			start_address = USER_FACTORY_START_ADDRESS;
+			break;
+		case APPLICATION1_FW_REGION:
+			start_address = USER_APPLICATION1_START_ADDRESS;
+			break;
+		case APPLICATION2_FW_REGION:
+			start_address = USER_APPLICATION2_START_ADDRESS;
+			break;
+		case APPLICATION3_FW_REGION:
+			start_address = USER_APPLICATION3_START_ADDRESS;
+			break;
+		case APPLICATION4_FW_REGION:
+			start_address = USER_APPLICATION4_START_ADDRESS;
+			break;
+		case APPLICATION5_FW_REGION:
+			start_address = USER_APPLICATION5_START_ADDRESS;
+			break;
+		default:
+			break;
+		}
+		break;
 	default:
 		throw cuhRetCode_InvalidRegion;
 		break;
@@ -584,6 +699,13 @@ void V2495_flash::write_protect() {
 
 	switch (controller_base_address) {
 	case MAIN_CONTROLLER_OFFSET:
+		region = PROTECT_SECTORS_0_63 << 2;
+		WriteRegister(controller_base_address + OPCODE_OFFSET, WRITE_ENABLE_OPCODE);
+		WriteRegister(controller_base_address + ADDRESS_OFFSET, region);
+		WriteRegister(controller_base_address + OPCODE_OFFSET, WRITE_STATUS_OPCODE);
+		wait_flash();
+		break;
+	case USER_CONTROLLER_OFFSET:
 		region = PROTECT_SECTORS_0_127 << 2;
 		WriteRegister(controller_base_address + OPCODE_OFFSET, WRITE_ENABLE_OPCODE);
 		WriteRegister(controller_base_address + ADDRESS_OFFSET, region);
@@ -627,7 +749,7 @@ void V2495_flash::get_protection_status(uint32_t& status) {
 
 
 	switch (controller_base_address) {
-	case MAIN_CONTROLLER_OFFSET:
+	case MAIN_CONTROLLER_OFFSET|USER_CONTROLLER_OFFSET:
 		WriteRegister(controller_base_address + OPCODE_OFFSET, READ_STATUS_OPCODE);
 		ReadRegister(controller_base_address + OPCODE_OFFSET, &data);
 		status = data >> 10;
