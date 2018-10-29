@@ -21,6 +21,12 @@ V2495_flash::V2495_flash(controller_t controller_offset)
 	int32_t ret;
 
 	handle = -1;
+	
+	/* Connection to target module 
+	**  Please change VME Base address accordingly to your setup:
+	**  i.e. for a VME Base address = 0x32100000 call:
+	**  CAENComm_OpenDevice(CAENComm_USB, 0, 0, 0x32100000, &handle);
+	*/
 	ret = CAENComm_OpenDevice(CAENComm_USB, 0, 0, 0, &handle);
 	if (ret != CAENComm_Success) {
 		fprintf(stderr, "Device open failed with CAENComm error %d.\n", ret);
