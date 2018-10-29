@@ -50,7 +50,7 @@ V2495_flash::V2495_flash(controller_t controller_offset)
 		// we must be able to read a unique IDCODE
 		ReadRegister(controller_base_address + IDCODE_OFFSET, &idcode);
 
-		if (idcode != 0x044C2D00)
+		if (idcode != 0xCAEF2495)
 			_flash_controller_present = 0; // controller not present/mapped
 		else
 			_flash_controller_present = 1;
